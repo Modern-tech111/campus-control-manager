@@ -1,0 +1,230 @@
+/* DO NOT CHANGE */
+@import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
+
+/* DO NOT CHANGE */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Fonts — Cairo for the Arabic UI (also covers Latin), Outfit for display headings.
+   Fallbacks keep Latin/numbers crisp wherever a glyph is missing. */
+@theme {
+  --font-sans: "Cairo", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Outfit", "Cairo", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Cairo", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* Accent lime scale — #9ef01a is the primary accent everywhere.
+   Overriding the default Tailwind lime palette so every `lime-*`
+   utility (bg-lime-500, text-lime-400, from-lime-400, …) resolves
+   to this greener, less-yellow family. */
+@theme {
+  --color-lime-200: #d8fb68;
+  --color-lime-300: #c3f538;
+  --color-lime-400: #9ef01a;
+  --color-lime-500: #84d911;
+  --color-lime-600: #68b00e;
+  --color-lime-700: #4d860b;
+}
+
+/* ============================================================
+   CAMPUS CONTROL THEME — Workspace Dark · Lime (#9ef01a)
+   Near-black (#121212) surfaces with a single vivid lime accent
+   (#9ef01a) — the "Workspace" aesthetic.
+   ============================================================ */
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.985 0.002 250);
+  --foreground: oklch(0.22 0.015 255);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.015 255);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.015 255);
+  --primary: #9ef01a;
+  --primary-foreground: oklch(0.15 0.02 250);
+  --secondary: oklch(0.955 0.004 250);
+  --secondary-foreground: oklch(0.3 0.02 255);
+  --muted: oklch(0.952 0.005 250);
+  --muted-foreground: oklch(0.53 0.014 255);
+  --accent: oklch(0.945 0.01 120);
+  --accent-foreground: oklch(0.3 0.03 125);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.912 0.005 252);
+  --input: oklch(0.92 0.004 252);
+  --ring: #9ef01a;
+  --chart-1: #9ef01a;
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.58 0.1 265);
+  --chart-4: oklch(0.769 0.188 70.08);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.29 0.02 255);
+  --sidebar-primary: #9ef01a;
+  --sidebar-primary-foreground: oklch(0.15 0.02 250);
+  --sidebar-accent: oklch(0.952 0.008 120);
+  --sidebar-accent-foreground: oklch(0.25 0.02 255);
+  --sidebar-border: oklch(0.912 0.005 252);
+  --sidebar-ring: #9ef01a;
+}
+
+/* The reference look: near-black workspace with lime accents */
+.dark {
+  --background: oklch(0.145 0.004 250);
+  --foreground: oklch(0.955 0.004 250);
+  --card: oklch(0.185 0.006 250);
+  --card-foreground: oklch(0.955 0.004 250);
+  --popover: oklch(0.2 0.007 250);
+  --popover-foreground: oklch(0.955 0.004 250);
+  --primary: #9ef01a;
+  --primary-foreground: oklch(0.16 0.03 250);
+  --secondary: oklch(0.235 0.008 250);
+  --secondary-foreground: oklch(0.955 0.004 250);
+  --muted: oklch(0.235 0.008 250);
+  --muted-foreground: oklch(0.68 0.012 252);
+  --accent: oklch(0.27 0.02 117.5);
+  --accent-foreground: oklch(0.95 0.02 117.5);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: #9ef01a;
+  --chart-1: #9ef01a;
+  --chart-2: oklch(0.745 0.15 165);
+  --chart-3: oklch(0.68 0.09 262);
+  --chart-4: oklch(0.8 0.16 78);
+  --chart-5: oklch(0.74 0.18 20);
+  --sidebar: oklch(0.165 0.005 250);
+  --sidebar-foreground: oklch(0.93 0.006 250);
+  --sidebar-primary: #9ef01a;
+  --sidebar-primary-foreground: oklch(0.16 0.03 250);
+  --sidebar-accent: oklch(0.245 0.018 117.5);
+  --sidebar-accent-foreground: oklch(0.96 0.008 117.5);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: #9ef01a;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "tnum";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  button:not([disabled]),
+  [role="button"]:not([disabled]) {
+    cursor: pointer;
+  }
+
+  /* Slim, theme-aware scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: color-mix(in oklab, var(--muted-foreground) 25%, transparent);
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* Glass panel used by the topbar / floating surfaces */
+  .glass-panel {
+    @apply border-border/60 bg-background/75 backdrop-blur-xl supports-[backdrop-filter]:bg-background/75;
+  }
+  .glass-panel-dark {
+    @apply border-border/60 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70;
+  }
+
+  /* Frosted sidebar surface */
+  [data-slot="sidebar-inner"] {
+    background: color-mix(in oklab, var(--sidebar) 88%, transparent);
+    backdrop-filter: blur(20px);
+  }
+
+  /* Subtle blueprint grid used behind heroes and page headers */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--primary) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--primary) 8%, transparent) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 55%, transparent 100%);
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-[var(--primary)] via-lime-300 to-emerald-300 bg-clip-text text-transparent;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ── Bidi / text-direction helpers ─────────────────────────────
+     Use on any fragment that must keep its own direction inside the
+     RTL layout: Latin names & emails, IDs, numbers, percentages,
+     dates, code — e.g. <span class="ltr">alex@school.edu</span>. */
+  .ltr {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+  .rtl {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+  .text-start {
+    text-align: start;
+  }
+  .text-end {
+    text-align: end;
+  }
+}
