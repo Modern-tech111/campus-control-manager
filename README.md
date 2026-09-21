@@ -1,311 +1,579 @@
+# Campus Control
+<img width="420" height="340" alt="1" src="https://github.com/user-attachments/assets/bb02b3cd-a5d6-447c-a0da-56ee8f41b6c4" />
+
+<img width="420" height="340" alt="2" src="https://github.com/user-attachments/assets/c0502265-1bb5-47f5-9eb4-f47d50f7b868" />
+
 ## Overview
 
+This project is a modern educational institution management dashboard built with React, TypeScript, Vite, Tailwind CSS, Shadcn UI, and a local MySQL database.
+
+The application provides tools for managing students, staff, classes, attendance, activities, and other academic and administrative data.
+
+## Tech Stack
+
 This project uses the following tech stack:
-- Vite
-- Typescript
-- React Router v7 (all imports from `react-router` instead of `react-router-dom`)
-- React 19 (for frontend components)
-- Tailwind v4 (for styling)
-- Shadcn UI (for UI components library)
-- Lucide Icons (for icons)
-- Convex (for backend & database)
-- Convex Auth (for authentication)
-- Framer Motion (for animations)
-- Three js (for 3d models)
 
-All relevant files live in the 'src' directory.
+* Vite
+* TypeScript
+* React Router v7
+* React 19
+* Tailwind CSS v4
+* Shadcn UI
+* Lucide Icons
+* Framer Motion
+* Three.js
+* Express.js
+* MySQL
+* phpMyAdmin
+* Node.js
 
-Use bun for the package manager.
+All relevant frontend files live in the `src` directory.
+
+The backend API is located in the `server` directory.
+
+## Package Manager
+
+Use npm for the package manager.
 
 ## Setup
 
-This project is set up already and running on a cloud environment, as well as a convex development in the sandbox.
+The project can be run locally using a React/Vite frontend and an Express API connected to MySQL.
 
-## Running locally with MySQL
+## Running Locally with MySQL
 
-The dashboard is backed by a local MySQL database named `campus-control`
-(managed via phpMyAdmin). A small Express API server (`server/`) connects to it,
-creates all tables on startup, and seeds them from `src/lib/data.ts` when they
-are empty.
+The dashboard is backed by a local MySQL database named `campus-control`, managed through phpMyAdmin.
 
-1. Start MySQL (e.g. XAMPP/WAMP) and make sure the `campus-control` database exists.
-2. Check the connection settings in `.env` (defaults: localhost:3306, root, no password).
-3. Run everything with one command:
+A small Express API server (`server/`) connects to the database, creates the required tables on startup, and seeds them with initial data from the project.
 
-   ```bash
-   npm run dev:full
-   ```
+### 1. Start MySQL
 
-   This starts the API server on http://localhost:4000 and Vite on
-   http://localhost:5173. Vite proxies `/api` requests to the API server.
+Start MySQL using XAMPP, WAMP, or another local MySQL installation.
 
-   Alternatively, run them in two terminals:
+Make sure the `campus-control` database exists.
 
-   ```bash
-   npm run server   # API on :4000
-   npm run dev      # Vite on :5173
-   ```
+### 2. Configure Environment Variables
 
-On first start the API creates and seeds the tables — you can inspect them in
-phpMyAdmin under the `campus-control` database.
+Check the `.env` file and configure the MySQL connection settings.
+
+Default local settings:
+
+* Host: `localhost`
+* Port: `3306`
+* User: `root`
+* Password: empty
+
+### 3. Start the Application
+
+Run:
+
+```bash
+npm run dev:full
+```
+
+This starts:
+
+* Express API server on `http://localhost:4000`
+* Vite development server on `http://localhost:5173`
+
+Vite proxies `/api` requests to the Express API server.
+
+### Alternative: Run Frontend and Backend Separately
+
+Open two terminals.
+
+Terminal 1:
+
+```bash
+npm run server
+```
+
+The API will run on port `4000`.
+
+Terminal 2:
+
+```bash
+npm run dev
+```
+
+The Vite frontend will run on port `5173`.
+
+### Database Initialization
+
+On the first start, the API creates the required database tables and seeds the initial data.
+
+You can inspect and manage the database through phpMyAdmin under the `campus-control` database.
 
 ## Environment Variables
 
-The project is set up with project specific CONVEX_DEPLOYMENT and VITE_CONVEX_URL environment variables on the client side.
+The local MySQL/API connection is configured through `.env`.
 
-The convex server has a separate set of environment variables that are accessible by the convex backend.
+Available variables:
 
-Currently, these variables include auth-specific keys: JWKS, JWT_PRIVATE_KEY, and SITE_URL.
+* `DB_HOST` — MySQL host
+* `DB_PORT` — MySQL port
+* `DB_USER` — MySQL username
+* `DB_PASSWORD` — MySQL password
+* `DB_NAME` — MySQL database name
+* `API_PORT` — Express API port, default `4000`
 
-The local MySQL/API connection is configured via `.env`:
+Example:
 
-- `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` — MySQL connection
-- `API_PORT` — port for the Express API server (default 4000)
-
-
-# Using Authentication (Important!)
-
-You must follow these conventions when using authentication.
-
-## Auth is set up against the MySQL database
-
-The dashboard requires login. Accounts live in the MySQL `users` table and
-sessions in the `sessions` table (bcrypt-hashed passwords, opaque bearer
-tokens valid for 30 days).
-
-- A default admin is seeded on first start: `admin@campus.edu` / `admin123`
-  (change it after your first login!).
-- New accounts can self-register on the `/auth` page.
-- All `/api` routes except `/api/auth/**` and `/api/health` require a valid
-  session token.
-
-## Using Auth on the frontend
-
-The `/auth` page handles log in / sign up. The `useAuth` hook is the only
-supported way to read auth state — never do this yourself without the hook:
-```typescript
-import { useAuth } from "@/hooks/use-auth";
-
-const { isLoading, isAuthenticated, user, signIn, signUp, signOut } = useAuth();
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=campus-control
+API_PORT=4000
 ```
 
-Protected routes use `RequireAuth` (from `@/components/require-auth`), which
-sends signed-out users to `/auth?returnTo=<current route>`.
+# Authentication
 
-Note: the Convex auth scaffolding still exists under `src/convex/` (email OTP
-config, `auth.config.ts`, `auth.ts`) but is **not** used by this MySQL-based
-setup. Leave those files untouched.
+Authentication is handled by the Express backend and MySQL database.
+
+## Auth Database
+
+The dashboard requires authentication.
+
+User accounts are stored in the MySQL `users` table, while active sessions are stored in the `sessions` table.
+
+Passwords are securely hashed using bcrypt.
+
+Sessions use bearer tokens with a limited validity period.
+
+### Default Admin Account
+
+A default administrator account is seeded during the initial database setup:
+
+```text
+Email: admin@campus.edu
+Password: admin123
+```
+
+Change the default password after the first login.
+
+### Registration
+
+New users can register through the `/auth` page.
+
+### Protected API Routes
+
+API routes require a valid authentication session except for public authentication and health endpoints.
+
+Public endpoints include:
+
+```text
+/api/auth/**
+/api/health
+```
+
+All other API routes require a valid session token.
+
+## Using Auth on the Frontend
+
+The `/auth` page handles login and registration.
+
+The `useAuth` hook is the supported way to access authentication state.
+
+Example:
+
+```tsx
+import { useAuth } from "@/hooks/use-auth";
+
+const {
+  isLoading,
+  isAuthenticated,
+  user,
+  signIn,
+  signUp,
+  signOut
+} = useAuth();
+```
+
+Protected routes use the `RequireAuth` component from:
+
+```text
+@/components/require-auth
+```
+
+Signed-out users are redirected to:
+
+```text
+/auth?returnTo=<current-route>
+```
 
 ## Protected Routes
 
-The starter `/dashboard` route is protected with `RequireAuth`, which sends
-signed-out users to `/auth?returnTo=<current route>`. Extend that page for the
-product's authenticated experience, and reuse `RequireAuth` when adding another
-protected route.
+The `/dashboard` route is protected with `RequireAuth`.
+
+When an unauthenticated user attempts to access a protected page, they are redirected to the authentication page.
+
+When authentication succeeds, the user is redirected to the appropriate protected page.
+
+When adding another protected page, reuse the `RequireAuth` component.
 
 ## Auth Page
 
-The auth page is defined in `src/pages/Auth.tsx`. Send sign-in and sign-up actions
-to `/auth`.
+The authentication page is located at:
+
+```text
+src/pages/Auth.tsx
+```
+
+Login and registration actions should be handled through the `/auth` route.
 
 ## Authorization
 
-You can perform authorization checks on the frontend and backend.
+Authorization checks should be performed on both the frontend and backend.
 
-On the frontend, you can use the `useAuth` hook to get the current user's data and authentication state.
+Frontend components can use the authenticated user's information from the `useAuth` hook.
 
-You should also be protecting queries, mutations, and actions at the base level, checking for authorization securely.
+Backend API routes must also validate the user's authentication and authorization before allowing protected operations.
 
-## Adding a redirect after auth
+Never rely exclusively on frontend authorization checks.
 
-The `/auth` route in `src/main.tsx` redirects to `/dashboard` by default. If the
-product's main authenticated route is different, update `redirectAfterAuth` to
-that route. A validated same-origin `returnTo` query parameter takes priority so
-users can resume the protected page they originally requested. Never leave an
-authenticated product redirecting back to the public landing page.
+## Adding a Redirect After Auth
 
-## Complete authenticated products
+The `/auth` route redirects authenticated users to the dashboard by default.
 
-When the requested product implies accounts, a workspace, a dashboard, or other
-signed-in functionality, the task is not complete with only a landing page and
-auth form. Build the main authenticated experience, protect its route, and verify
-that signing in reaches it.
+If the main authenticated route changes, update the redirect destination accordingly.
+
+A validated `returnTo` query parameter can be used to return users to the protected page they originally requested.
+
+Never redirect authenticated users back to an unrelated public landing page when they should enter the authenticated application.
+
+## Complete Authenticated Products
+
+When the application requires accounts, a workspace, or a dashboard, authentication should not be considered complete with only a login form.
+
+The application should:
+
+* Provide the complete authenticated experience.
+* Protect authenticated routes.
+* Validate authentication on the backend.
+* Redirect authenticated users to the appropriate dashboard or workspace.
+* Handle loading and unauthorized states properly.
 
 # Frontend Conventions
 
-You will be using the Vite frontend with React 19, Tailwind v4, and Shadcn UI.
+The project uses Vite with React 19, Tailwind CSS v4, and Shadcn UI.
 
-Generally, pages should be in the `src/pages` folder, and components should be in the `src/components` folder.
+Generally:
 
-Shadcn primitives are located in the `src/components/ui` folder and should be used by default.
+* Pages should be located in `src/pages`.
+* Components should be located in `src/components`.
+* Shadcn UI primitives are located in `src/components/ui`.
 
-## Page routing
+Use the existing component system whenever possible instead of creating unnecessary duplicate components.
 
-Your page component should go under the `src/pages` folder.
+## Page Routing
 
-When adding a page, update the react router configuration in `src/main.tsx` to include the new route you just added.
+Page components should be placed inside:
 
-## Shad CN conventions
+```text
+src/pages
+```
 
-Follow these conventions when using Shad CN components, which you should use by default.
-- Remember to use "cursor-pointer" to make the element clickable
-- For title text, use the "tracking-tight font-bold" class to make the text more readable
-- Always make apps MOBILE RESPONSIVE. This is important
-- AVOID NESTED CARDS. Try and not to nest cards, borders, components, etc. Nested cards add clutter and make the app look messy.
-- AVOID SHADOWS. Avoid adding any shadows to components. stick with a thin border without the shadow.
-- Avoid skeletons; instead, use the loader2 component to show a spinning loading state when loading data.
+When adding a page, update the React Router configuration in:
 
+```text
+src/main.tsx
+```
+
+Add the appropriate route for the new page.
+
+## Shadcn UI Conventions
+
+Follow these conventions when using Shadcn UI components:
+
+* Use `cursor-pointer` on clickable elements.
+* Use `tracking-tight font-bold` for important title text.
+* Always make the application mobile responsive.
+* Avoid nested cards.
+* Avoid unnecessary borders and containers.
+* Avoid excessive shadows.
+* Prefer clean borders and spacing.
+* Avoid unnecessary skeleton loaders.
+* Use a loading spinner such as `Loader2` when appropriate.
 
 ## Landing Pages
 
-You must always create good-looking designer-level styles to your application. 
-- Make it well animated and fit a certain "theme", ie neo brutalist, retro, neumorphism, glass morphism, etc
+Create polished, designer-level interfaces.
 
-Use known images and emojis from online.
+Each landing page should have a clear visual direction or theme, such as:
 
-If the user is logged in already, show the get started button to say "Dashboard" or "Profile" instead to take them there.
+* Glassmorphism
+* Neumorphism
+* Neo-brutalism
+* Minimalist
+* Futuristic
+* Modern SaaS
 
-## Responsiveness and formatting
+Use appropriate animations, typography, spacing, imagery, and visual hierarchy.
 
-Make sure pages are wrapped in a container to prevent the width stretching out on wide screens. Always make sure they are centered aligned and not off-center.
+If the user is already authenticated, the main call-to-action should lead to the Dashboard or Profile instead of showing an unnecessary Get Started action.
 
-Always make sure that your designs are mobile responsive. Verify the formatting to ensure it has correct max and min widths as well as mobile responsiveness.
+## Responsiveness and Formatting
 
-- Always create sidebars for protected dashboard pages and navigate between pages
-- Always create navbars for landing pages
-- On these bars, the created logo should be clickable and redirect to the index page
+Pages should be wrapped in a centered container to prevent excessive stretching on large screens.
 
-## Animating with Framer Motion
+Always ensure:
 
-You must add animations to components using Framer Motion. It is already installed and configured in the project.
+* Correct maximum and minimum widths.
+* Mobile responsiveness.
+* Tablet compatibility.
+* Desktop compatibility.
+* Proper spacing at different breakpoints.
+* No horizontal overflow.
 
-To use it, import the `motion` component from `framer-motion` and use it to wrap the component you want to animate.
+Protected dashboard pages should use a sidebar for navigation.
 
+Landing pages should use a navbar.
 
-### Other Items to animate
-- Fade in and Fade Out
-- Slide in and Slide Out animations
-- Rendering animations
-- Button clicks and UI elements
+The application logo should be clickable and redirect to the main/index page.
 
-Animate for all components, including on landing page and app pages.
+## Animations with Framer Motion
 
-## Three JS Graphics
+Framer Motion is installed and should be used for meaningful interface animations.
 
-Your app comes with three js by default. You can use it to create 3D graphics for landing pages, games, etc.
+Import `motion` from:
 
+```tsx
+import { motion } from "framer-motion";
+```
 
-## Colors
+Use it to animate components where appropriate.
 
-You can override colors in: `src/index.css`
+### Recommended Animations
 
-This uses the oklch color format for tailwind v4.
+Examples include:
 
-Always use these color variable names.
+* Fade in
+* Fade out
+* Slide in
+* Slide out
+* Page transitions
+* Component entrance animations
+* Button interactions
+* Interactive UI elements
 
-Make sure all ui components are set up to be mobile responsive and compatible with both light and dark mode.
+Animations should improve the user experience without becoming distracting.
 
-Set theme using `dark` or `light` variables at the parent className.
+## Three.js Graphics
+
+Three.js is available for creating 3D graphics when appropriate.
+
+It can be used for:
+
+* Landing pages
+* 3D visualizations
+* Interactive elements
+* Decorative graphics
+
+Use Three.js only when it adds meaningful visual value.
+
+# Colors
+
+Colors can be configured in:
+
+```text
+src/index.css
+```
+
+The project uses the OKLCH color format with Tailwind CSS v4.
+
+Use the existing color variables instead of introducing unnecessary hardcoded colors.
+
+All UI components should support:
+
+* Light mode
+* Dark mode
+* Mobile responsiveness
+
+Theme changes should be applied consistently throughout the application.
 
 ## Styling and Theming
 
-When changing the theme, always change the underlying theme of the shad cn components app-wide under `src/components/ui` and the colors in the index.css file.
+When changing the application theme:
 
-Avoid hardcoding in colors unless necessary for a use case, and properly implement themes through the underlying shad cn ui components.
+* Update the Shadcn UI theme.
+* Update the variables in `src/index.css`.
+* Keep colors consistent across the application.
+* Avoid unnecessary hardcoded colors.
+* Ensure both light and dark themes remain usable.
 
-When styling, ensure buttons and clickable items have pointer-click on them (don't by default).
+Theme selection should be controlled through the appropriate `dark` or `light` class on the parent element.
 
-Always follow a set theme style and ensure it is tuned to the user's liking.
+Clickable elements should clearly communicate that they are interactive.
 
-## Toasts
+Always maintain a consistent visual theme throughout the application.
 
-You should always use toasts to display results to the user, such as confirmations, results, errors, etc.
+# Toasts
 
-Use the shad cn Sonner component as the toaster. For example:
+Use toast notifications to provide feedback for user actions.
 
-```
-import { toast } from "sonner"
+Examples include:
 
-import { Button } from "@/components/ui/button"
-export function SonnerDemo() {
-  return (
-    <Button
-      variant="outline"
-      onClick={() =>
-        toast("Event has been created", {
-          description: "Sunday, December 03, 2023 at 9:00 AM",
-          action: {
-            label: "Undo",
-            onClick: () => console.log("Undo"),
-          },
-        })
-      }
-    >
-      Show Toast
-    </Button>
-  )
-}
+* Successful operations
+* Errors
+* Confirmations
+* Updates
+* Form submissions
+
+Use the Shadcn Sonner component.
+
+Example:
+
+```tsx
+import { toast } from "sonner";
+
+toast("Event has been created.");
 ```
 
-Remember to import { toast } from "sonner". Usage: `toast("Event has been created.")`
+For more detailed notifications:
 
-## Dialogs
-
-Always ensure your larger dialogs have a scroll in its content to ensure that its content fits the screen size. Make sure that the content is not cut off from the screen.
-
-Ideally, instead of using a new page, use a Dialog instead. 
-
-# Using the Convex backend
-
-You will be implementing the convex backend. Follow your knowledge of convex and the documentation to implement the backend.
-
-## The Convex Schema
-
-You must correctly follow the convex schema implementation.
-
-The schema is defined in `src/convex/schema.ts`.
-
-Do not include the `_id` and `_creationTime` fields in your queries (it is included by default for each table).
-Do not index `_creationTime` as it is indexed for you. Never have duplicate indexes.
-
-
-## Convex Actions: Using CRUD operations
-
-When running anything that involves external connections, you must use a convex action with "use node" at the top of the file.
-
-You cannot have queries or mutations in the same file as a "use node" action file. Thus, you must use pre-built queries and mutations in other files.
-
-You can also use the pre-installed internal crud functions for the database:
-
-```ts
-// in convex/users.ts
-import { crud } from "convex-helpers/server/crud";
-import schema from "./schema.ts";
-
-export const { create, read, update, destroy } = crud(schema, "users");
-
-// in some file, in an action:
-const user = await ctx.runQuery(internal.users.read, { id: userId });
-
-await ctx.runMutation(internal.users.update, {
-  id: userId,
-  patch: {
-    status: "inactive",
-  },
+```tsx
+toast("Event has been created", {
+  description: "Sunday, December 03, 2023 at 9:00 AM",
 });
 ```
 
+Always provide useful feedback when an operation succeeds or fails.
 
-## Common Convex Mistakes To Avoid
+# Dialogs
 
-When using convex, make sure:
-- Document IDs are referenced as `_id` field, not `id`.
-- Document ID types are referenced as `Id<"TableName">`, not `string`.
-- Document object types are referenced as `Doc<"TableName">`.
-- Keep schemaValidation to false in the schema file.
-- You must correctly type your code so that it passes the type checker.
-- You must handle null / undefined cases of your convex queries for both frontend and backend, or else it will throw an error that your data could be null or undefined.
-- Always use the `@/folder` path, with `@/convex/folder/file.ts` syntax for importing convex files.
-- This includes importing generated files like `@/convex/_generated/server`, `@/convex/_generated/api`
-- Remember to import functions like useQuery, useMutation, useAction, etc. from `convex/react`
-- NEVER have return type validators.
+Larger dialogs should have scrollable content so that information remains accessible on smaller screens.
+
+Make sure dialog content is never cut off.
+
+When an interaction does not require a completely new page, consider using a Dialog instead.
+
+Dialogs should remain responsive on mobile, tablet, and desktop screens.
+
+# Database and API
+
+The application uses MySQL as its primary database.
+
+The Express server provides the API layer between the React frontend and MySQL.
+
+The general architecture is:
+
+```text
+React + Vite
+      ↓
+Express API
+      ↓
+MySQL
+```
+
+## Database
+
+The database is named:
+
+```text
+campus-control
+```
+
+Database management can be performed through phpMyAdmin.
+
+The Express server is responsible for:
+
+* Connecting to MySQL.
+* Creating required tables.
+* Seeding initial data.
+* Handling API requests.
+* Authenticating users.
+* Managing sessions.
+* Reading and updating application data.
+
+## API
+
+The API server is located in:
+
+```text
+server/
+```
+
+The default API port is:
+
+```text
+4000
+```
+
+Frontend API requests should use the `/api` path.
+
+Example:
+
+```text
+/api/auth/login
+/api/auth/register
+/api/health
+```
+
+Vite proxies API requests to the Express server during local development.
+
+# Project Structure
+
+The main project structure is:
+
+```text
+src/
+├── components/
+├── components/ui/
+├── hooks/
+├── lib/
+├── pages/
+├── main.tsx
+└── index.css
+
+server/
+├── ...
+└── ...
+
+.env
+package.json
+vite.config.ts
+```
+
+Keep frontend pages, components, hooks, and utilities organized according to their purpose.
+
+# Development Guidelines
+
+When adding new functionality:
+
+1. Follow the existing project structure.
+2. Reuse existing UI components whenever possible.
+3. Keep the interface responsive.
+4. Follow the existing theme.
+5. Use the existing authentication system.
+6. Protect sensitive API endpoints.
+7. Validate data on the backend.
+8. Handle loading and error states.
+9. Provide toast feedback for important actions.
+10. Test the feature on mobile and desktop layouts.
+
+# Code Quality
+
+Keep the codebase clean, maintainable, and consistent.
+
+Avoid:
+
+* Duplicate components.
+* Unnecessary dependencies.
+* Hardcoded sensitive information.
+* Unprotected backend endpoints.
+* Excessive nested components.
+* Unnecessary UI complexity.
+* Desktop-only layouts.
+
+Prefer:
+
+* Reusable components.
+* Clear naming.
+* Strong TypeScript types.
+* Centralized configuration.
+* Reusable API functions.
+* Consistent error handling.
+* Responsive layouts.
+* Accessible UI components.
+
