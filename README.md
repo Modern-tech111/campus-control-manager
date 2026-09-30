@@ -1,11 +1,12 @@
 # Campus Control
+
 <img width="420" height="340" alt="1" src="https://github.com/user-attachments/assets/bb02b3cd-a5d6-447c-a0da-56ee8f41b6c4" />
 
 <img width="420" height="340" alt="2" src="https://github.com/user-attachments/assets/c0502265-1bb5-47f5-9eb4-f47d50f7b868" />
 
 ## Overview
 
-This project is a modern educational institution management dashboard built with React, TypeScript, Vite, Tailwind CSS, Shadcn UI, and MySQL.
+Campus Control is a modern educational institution management dashboard built with React, TypeScript, Vite, Tailwind CSS, Shadcn UI, Express.js, and MySQL.
 
 The application provides tools for managing students, staff, classes, attendance, activities, and other academic and administrative data.
 
@@ -22,34 +23,27 @@ The application provides tools for managing students, staff, classes, attendance
 * Three.js
 * Express.js
 * MySQL
-* Convex
-* phpMyAdmin
 * Node.js
 
 ## Package Manager
 
-Use npm as the package manager.
+Use **npm** as the package manager.
 
 ## Setup
 
-The project can be run locally using a React/Vite frontend, Express API, MySQL database, and Convex for online backend functionality.
+The project uses a React/Vite frontend, an Express API, and a MySQL database.
 
-## Running Locally
+Install the dependencies:
 
-The application uses a local MySQL database named `campus-control`, managed through phpMyAdmin.
+```bash
+npm install
+```
 
-The Express API connects the frontend to MySQL and handles authentication and application data.
-
-Run the complete application with:
+Configure the database connection in `.env`, then start the application:
 
 ```bash
 npm run dev:full
 ```
-
-This starts:
-
-* Express API on `http://localhost:4000`
-* Vite development server on `http://localhost:5173`
 
 ### Alternative
 
@@ -65,22 +59,30 @@ npm run dev
 
 ## Environment Variables
 
-Configure the local database and API through `.env`.
+Configure the database and API through `.env`.
 
 ```env
-DB_HOST=localhost
+DB_HOST=your-database-host
 DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=
+DB_USER=your-database-user
+DB_PASSWORD=your-database-password
 DB_NAME=campus-control
 API_PORT=4000
 ```
+
+The application expects a MySQL database named:
+
+```text
+campus-control
+```
+
+The backend handles the database connection and application data through the Express API.
 
 ## Authentication
 
 Authentication is handled through the Express backend and MySQL database.
 
-User accounts are stored in the `users` table and sessions are stored in the `sessions` table.
+User accounts are stored in the `users` table, while active sessions are stored in the `sessions` table.
 
 Passwords are securely hashed using bcrypt.
 
@@ -99,9 +101,9 @@ Protected routes use the `RequireAuth` component.
 
 ## UI and Styling
 
-The project uses Tailwind CSS v4, Shadcn UI, and OKLCH colors.
+The project uses Tailwind CSS v4 and Shadcn UI.
 
-Support:
+The interface supports:
 
 * Light mode
 * Dark mode
@@ -132,7 +134,7 @@ Dialogs should remain accessible and scrollable on smaller screens.
 
 ## Database and API
 
-The main local architecture is:
+The application follows this architecture:
 
 ```text
 React + Vite
@@ -140,12 +142,6 @@ React + Vite
 Express API
       ↓
 MySQL
-```
-
-The MySQL database is named:
-
-```text
-campus-control
 ```
 
 The API is located in:
@@ -162,29 +158,6 @@ The default API port is:
 
 Frontend API requests should use the `/api` path.
 
-## Convex
-
-Convex is used for online backend functionality, including cloud data, real-time updates, and file storage when required.
-
-The Convex backend is located in:
-
-```text
-convex/
-```
-
-The React frontend communicates with Convex through its client and backend functions.
-
-## Convex Storage
-
-Convex Storage can be used for online files such as:
-
-* Images
-* Documents
-* Attachments
-* User-uploaded files
-
-Sensitive configuration and credentials must not be committed to the repository.
-
 ## Project Structure
 
 ```text
@@ -198,10 +171,6 @@ src/
 └── index.css
 
 server/
-├── ...
-└── ...
-
-convex/
 ├── ...
 └── ...
 
@@ -248,4 +217,3 @@ Prefer:
 * Consistent error handling.
 * Responsive layouts.
 * Accessible UI components.
-
